@@ -1,1 +1,19 @@
+# QRadar EPS Queries
+
+This document contains various QRadar queries for calculating Events Per Second (EPS) for different time periods and devices. The queries are useful for monitoring and analyzing device activity within specific time frames.
+
+| Sr. | Name                       | Description                                                    | Query                                                                                                                                                                     |
+| --- | -------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | EPS-1hour-1Device           | Will show EPS in the last 1 hour for the device having ID=822. | ```SELECT LOGSOURCENAME(logsourceid) AS "Device Name", logsourceid AS "Device ID", SUM(eventcount) AS "Total Events", SUM(eventcount) / 3600 AS "EPS" FROM events where logsourceid=822 GROUP BY logsourceid ORDER BY "Device Name" last 1 HOURS``` |
+| 2   | EPS-1hour-All Devices       | Will list EPS in the last 1 hour for all devices.              | ```SELECT LOGSOURCENAME(logsourceid) AS "Device Name", logsourceid AS "Device ID", SUM(eventcount) AS "Total Events", SUM(eventcount) / 3600 AS "EPS" FROM events GROUP BY logsourceid ORDER BY "Device Name" last 1 HOURS``` |
+| 3   | EPS-24hours-1Device         | Will show EPS in the last 24 hours for the device having ID=822. | ```SELECT LOGSOURCENAME(logsourceid) AS "Device Name", logsourceid AS "Device ID", SUM(eventcount) AS "Total Events", SUM(eventcount) / 86400 AS "EPS" FROM events where logsourceid=822 GROUP BY logsourceid ORDER BY "Device Name" last 24 HOURS``` |
+| 4   | EPS-24hours-All Devices     | Will list EPS in the last 24 hours for all devices.            | ```SELECT LOGSOURCENAME(logsourceid) AS "Device Name", logsourceid AS "Device ID", SUM(eventcount) AS "Total Events", SUM(eventcount) / 86400 AS "EPS" FROM events GROUP BY logsourceid ORDER BY "Device Name" last 24 HOURS``` |
+| 5   | EPS-Top 10 Devices 12 hours | Will list the top 10 devices with the highest EPS in the last 12 hours. | ```SELECT LOGSOURCENAME(logsourceid) AS "Device Name", logsourceid AS "Device ID", SUM(eventcount) AS "Total Events", SUM(eventcount) / 43200 AS "EPS" FROM events GROUP BY logsourceid ORDER BY "EPS" DESC LIMIT 10 last 12 HOURS``` |
+
+## Notes
+- The `logsourceid=822` in the queries is a placeholder. You can replace it with the actual device ID, which can be found in the Log Source Management section of QRadar.
+- The time calculations are based on seconds:
+  - **3600** seconds = 1 hour
+  - **86400** seconds = 24 hours
+  - **43200** seconds = 12 hours
 
